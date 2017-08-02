@@ -1,30 +1,56 @@
+import equations.MyEquation;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import equations.*;
 
 public class Main {
 
-    List<Equations> equationsList;
+    List<Equation> equationList;
 
+    /**
+     * This is where I will add new equations, will be hard coded.
+     */
     public Main(){
-        equationsList = new ArrayList<Equations>();
+        equationList = new ArrayList<Equation>();
+        equationList.add(new MyEquation());
+        equationList.add(new MyEquation());
     }
 
     public static void main(String[] args) {
         //System.out.println("Hello World");
+        Main m = new Main();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please choose an option by entering an int.");
-        System.out.println("(1): Test: 'a + b - c'");
-        System.out.println("(0): exit");
         int i = -1;
         while(i != 0) {
+            m.printDefaultMessage(); //Program is in default state.
             i = scanner.nextInt();
-            switch(i){
-                case 1 : Equations.test(scanner); break;
-                default : break;
+//            switch(i){
+//                case 1 : m.equationList.get(i-1).calculate(scanner); break;
+//                default : break;
+//            }
+            //if user enters 0, will attampt to get -1 in equationList.
+            try{
+                m.equationList.get(i-1).calculate(scanner);
+            }
+            catch (ArrayIndexOutOfBoundsException e){
+                //That's fine, do nothing. User should assume they entered an incorrect value.
+                if(i!=0) System.out.println("Invalid input.");
             }
         }
         System.out.println("Exiting program.");
+    }
+
+    public void printDefaultMessage(){
+        System.out.println("Please choose an option by entering an int.");
+        for(int i = 0; i < equationList.size(); i++){
+            String eqName = equationList.get(i).getClass().getSimpleName();
+            String equation = equation = equationList.get(i).equation;
+            assert equation != null;
+            System.out.println("("+(i+1)+")"+": "+eqName+" '"+equation+"'");
+        }
+        System.out.println("(0): exit");
     }
 
 }
