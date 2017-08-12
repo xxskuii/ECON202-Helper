@@ -1,16 +1,11 @@
 package equations;
 
 import java.util.List;
-import java.util.Scanner;
 
-public class MyEquation extends Equation {
+public class GDPOpen extends Equation {
 
-    /**
-     * This is how to make an equation, will be hard coded in.
-     * This is an example equation
-     */
-    public MyEquation(){
-        super("a + b + c", "a,b,c");
+    public GDPOpen(){
+        super("C + I + G + (X - M)", "C,I,G,X,M");
     }
 
     /*
@@ -22,11 +17,13 @@ public class MyEquation extends Equation {
 
     public Double calculate(List<Double> values){
         try{
-            Double answer = values.get(0)+values.get(1)+values.get(2);
+            //                  C               I           G         (     X       -      M      )
+            Double answer = values.get(0)+values.get(1)+values.get(2)+(values.get(3)-values.get(4));
             return answer;
         }
         catch (Exception e){
             return null;
         }
     }
+
 }

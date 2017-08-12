@@ -15,7 +15,7 @@ public class Main {
     public Main(){
         equationList = new ArrayList<Equation>();
         equationList.add(new MyEquation());
-        equationList.add(new MyEquation());
+        equationList.add(new GDPOpen());
     }
 
     public static void main(String[] args) {
@@ -26,15 +26,11 @@ public class Main {
         while(i != 0) {
             m.printDefaultMessage(); //Program is in default state.
             i = scanner.nextInt();
-//            switch(i){
-//                case 1 : m.equationList.get(i-1).calculate(scanner); break;
-//                default : break;
-//            }
-            //if user enters 0, will attampt to get -1 in equationList.
+            //if user enters 0, will attampt to get -1 in equationList. So catch error, keep it running, don't crash
             try{
                 m.equationList.get(i-1).calculate(scanner);
             }
-            catch (ArrayIndexOutOfBoundsException e){
+            catch (Exception e){
                 //That's fine, do nothing. User should assume they entered an incorrect value.
                 if(i!=0) System.out.println("Invalid input.");
             }
@@ -43,10 +39,11 @@ public class Main {
     }
 
     public void printDefaultMessage(){
+        System.out.println("-------------------------------------------");
         System.out.println("Please choose an option by entering an int.");
         for(int i = 0; i < equationList.size(); i++){
             String eqName = equationList.get(i).getClass().getSimpleName();
-            String equation = equation = equationList.get(i).equation;
+            String equation = equationList.get(i).equation;
             assert equation != null;
             System.out.println("("+(i+1)+")"+": "+eqName+" '"+equation+"'");
         }

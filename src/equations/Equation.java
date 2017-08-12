@@ -1,5 +1,7 @@
 package equations;
 
+import com.sun.istack.internal.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -18,11 +20,31 @@ public abstract class Equation {
         this.hint = hint;
     }
 
+    public void calculate(Scanner s){
+        System.out.println("Equation: "+this.equation);
+        System.out.println("Enter csv values respectivly:");
+        System.out.println(this.hint);
+        String csv = s.next();
+        List<Double> values = tokenValues(csv);
+        if(values == null) {
+            System.out.println("Invalid input.");
+            return;
+        }
+        //assert values != null : "tokenValues returned null, user-csv: "+csv;
+        System.out.println("Running Equation '"+this.equation+"' with: "+csv);
+        Double answer = calculate(values);
+        if(answer == null)
+            System.out.println("Invalid input.");
+        else
+            System.out.println("Answer: "+answer);
+    }
+
     /**
-     * This should perform the calculation. Input will be done in the method with the scanner.
-     * @param s the scanner from Main
+     * This should perform the actual calculation. Should return null if something goes wrong.
+     * @param values list of all the values from csv input by the user
      */
-    public abstract void calculate(Scanner s);
+    @Nullable
+    public abstract Double calculate(List<Double> values);
 
 
     public static void test(Scanner s){
@@ -37,10 +59,11 @@ public abstract class Equation {
     }
 
     /**
-     * Obtain values from csv
+     * Obtain values from csv, return null if the csv is not right.
      * @param csv user input csv
      * @return List of doubles of what the user entered.
      */
+    @Nullable
     public static List<Double> tokenValues(String csv){
         Scanner scanner = new Scanner(csv);
         try {
@@ -52,9 +75,8 @@ public abstract class Equation {
             return values;
         }
         catch(Exception | Error e){
-            System.out.println("Invalid input");
+            return null;
         }
-        return null;
     }
 
 }
